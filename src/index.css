@@ -1,0 +1,25 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-Dark-Mode-Elements: hsl(209, 23%, 22%);
+  --color-Light-Mode-Text: hsl(200, 15%, 8%);
+  --color-Dark-Mode-Background: hsl(207, 26%, 17%);
+  --color-Light-Mode-Input: hsl(0, 0%, 52%);
+  --color-Light-Mode-Background: hsl(0, 0%, 98%);
+  --color-White: hsl(0, 0%, 100%);
+
+  --Homepage-Items: 14px;
+  --Detail-Page: 16px;
+
+  --Nunito: "Nunito Sans", serif;
+}
+
+body {
+  max-width: 90rem;
+  min-height: 100vh;
+  font-family: var(--Nunito);
+  margin-inline: auto;
+}
+
+/* Default (light theme) */

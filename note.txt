@@ -1,0 +1,31 @@
+body.light {
+  background-color: white;
+  color: black;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark theme */
+body.dark {
+  background-color: black;
+  color: white;
+}
+
+/* Light mode styles */
+input {
+  background-color: white;
+  color: black;
+}
+
+input::placeholder {
+  color: gray; /* Placeholder color for light mode */
+}
+
+/* Dark mode styles */
+body.dark input {
+  background-color: black;
+  color: white;
+}
+
+body.dark input::placeholder {
+  color: lightgray; /* Placeholder color for dark mode */
+}
