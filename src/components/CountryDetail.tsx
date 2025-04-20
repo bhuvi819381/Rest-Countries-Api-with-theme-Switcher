@@ -6,7 +6,7 @@ import {
   FaMapMarkedAlt,
   FaHeart,
   FaRegHeart,
-  FaInfoCircle,
+
 } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 

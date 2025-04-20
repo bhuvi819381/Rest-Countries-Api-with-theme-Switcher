@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import {
   FaAngleDown,
-  FaAngleUp,
   FaGlobeAmericas,
   FaTimes,
 } from "react-icons/fa";

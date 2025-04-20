@@ -36,7 +36,7 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [Solution_Here](https://github.com/bhuvi819381/Rest-Countries-Api-with-theme-Switcher)]
+- Solution URL: [Solution_Here](https://github.com/bhuvi819381/Rest-Countries-Api-with-theme-Switcher)
 - Live Site URL: [Live_Site](https://rest-country-api-with-dark.netlify.com)
 
 ## My process
