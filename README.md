@@ -36,8 +36,8 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Solution URL: [Solution_Here](https://github.com/bhuvi819381/Rest-Countries-Api-with-theme-Switcher)]
+- Live Site URL: [Live_Site](https://rest-country-api-with-dark.netlify.com)
 
 ## My process
 
