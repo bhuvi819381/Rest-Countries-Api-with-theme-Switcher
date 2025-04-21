@@ -2,7 +2,8 @@ import { Country, CountryCardInfo } from "../types";
 import CountryCard from "./CountryCard";
 import SkeletonCard from "./SkeletonCard";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { FaSpinner } from "react-icons/fa";
 import {
   FaSort,
   FaSortAlphaDown,
@@ -27,6 +28,11 @@ const Countries = ({
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
   const [sortedCountries, setSortedCountries] = useState<CountryCardInfo[]>([]);
   const [showSortOptions, setShowSortOptions] = useState(false);
+
+  // Infinite scroll state
+  const [visibleCount, setVisibleCount] = useState(12); // Initially show 12 countries
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const loaderRef = useRef<HTMLDivElement>(null); // Reference to the loader element
 
   // Convert and sort countries
   useEffect(() => {
@@ -111,6 +117,50 @@ const Countries = ({
     }
   };
 
+  // Reset visible count when filters change
+  useEffect(() => {
+    setVisibleCount(12);
+  }, [filteredCountries, sortBy, sortDirection]);
+
+  // Get visible countries
+  const visibleCountries = sortedCountries.slice(0, visibleCount);
+  const hasMore = visibleCount < sortedCountries.length;
+
+  // Intersection Observer for infinite scrolling
+  const handleObserver = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const [target] = entries;
+      if (target.isIntersecting && hasMore && !isLoadingMore) {
+        setIsLoadingMore(true);
+        // Simulate loading delay for better UX
+        setTimeout(() => {
+          setVisibleCount((prev) => prev + 8); // Load 8 more countries
+          setIsLoadingMore(false);
+        }, 800);
+      }
+    },
+    [hasMore, isLoadingMore]
+  );
+
+  // Set up the intersection observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleObserver, {
+      root: null,
+      rootMargin: "20px",
+      threshold: 0.1,
+    });
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+      }
+    };
+  }, [handleObserver]);
+
   // Render skeleton cards when loading
   if (isLoading) {
     return (
@@ -122,6 +172,14 @@ const Countries = ({
           {[...Array(12)].map((_, index) => (
             <SkeletonCard key={index} />
           ))}
+        </div>
+
+        {/* Loading more indicator */}
+        <div className="flex justify-center items-center mt-8 mb-4">
+          <div className="p-4 flex items-center justify-center">
+            <FaSpinner className="animate-spin text-2xl text-blue-500" />
+            <span className="ml-2">Loading countries...</span>
+          </div>
         </div>
       </div>
     );
@@ -189,13 +247,39 @@ const Countries = ({
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 justify-items-center">
-            {sortedCountries.map((country, index) => (
+            {visibleCountries.map((country, index) => (
               <CountryCard
                 key={country.alpha3Code || index}
                 country={country}
               />
             ))}
           </div>
+
+          {/* Infinite scroll loader */}
+          {hasMore && (
+            <div
+              ref={loaderRef}
+              className="flex justify-center items-center py-8 mt-4"
+            >
+              {isLoadingMore ? (
+                <motion.div
+                  className="flex items-center justify-center gap-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <FaSpinner className="animate-spin text-xl text-blue-500" />
+                  <span>Loading more countries...</span>
+                </motion.div>
+              ) : (
+                <motion.div
+                  className="h-8 w-8 bg-gray-200 dark:bg-gray-700 rounded-full opacity-0"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0 }}
+                />
+              )}
+            </div>
+          )}
         </>
       )}
     </motion.div>
